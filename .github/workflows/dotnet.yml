@@ -31,16 +31,9 @@ jobs:
         name: webapp
         path: website/**
         if-no-files-found: warn
-#Test        
-  test:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-    - run: echo "Hello World"
-    #- uses: actions/checkout@v2
   deploy: 
       runs-on: ubuntu-latest
-      needs: test 
+      needs: build 
       steps:
       - name: Download a Build Artifact
         uses: actions/download-artifact@v2.1.0
@@ -53,3 +46,9 @@ jobs:
           app-name: GitHubApp-231537921
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE  }}
           package: webapp
+#Test        
+  test:
+    runs-on: ubuntu-latest
+    needs: deploy
+    steps:
+    - uses: webapp    
